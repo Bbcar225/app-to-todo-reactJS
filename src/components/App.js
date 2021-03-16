@@ -5,13 +5,26 @@ import uniqueId from 'uniqueid';
 import initialData from '../initialData';
 
 import AddTask from './AddTask';
+import Fetching from './Fetching';
 import NavBar from './NavBar';
 import ToDoList from "./ToDoList";
 
 class App extends Component {
 
 	state = {
-		tasks: initialData
+		tasks: [],
+		fetching: true
+	}
+
+	componentDidMount = () => {
+		let delay = Math.floor(Math.random() * 10000)
+
+		setTimeout(() => {
+			this.setState({
+				fetching: false,
+				tasks: initialData
+			})
+		}, delay)
 	}
 
 	onToggleCompleted = (taskId) => {
@@ -53,6 +66,8 @@ class App extends Component {
 	render() {
 		return (
 			<section id="todo">
+				{this.state.fetching && <Fetching />}
+
 				<BrowserRouter>
 					<Switch>
 						<Route path='/add-task' render={(props) => <AddTask {...props} onAddTask={this.onAddTask}/>}/>
